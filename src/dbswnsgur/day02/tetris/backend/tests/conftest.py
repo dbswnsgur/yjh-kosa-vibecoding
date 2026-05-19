@@ -1,3 +1,6 @@
+import os
+os.environ["TESTING"] = "1"  # main.py의 create_all이 MySQL에 연결 시도하지 않도록
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine

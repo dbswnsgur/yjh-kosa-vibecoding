@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,7 +9,8 @@ from .models import Base
 from .routers.auth import router as auth_router
 from .routers.scores import router as scores_router
 
-Base.metadata.create_all(bind=engine)
+if not os.getenv("TESTING"):
+    Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Tetris API", docs_url="/api/docs", redoc_url=None)
 

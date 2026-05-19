@@ -1,2 +1,5 @@
 tetris.db
 __pycache__/
+.env
+*.pyc
+.pytest_cache/
