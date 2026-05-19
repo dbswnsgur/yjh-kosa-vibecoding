@@ -1,0 +1,268 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #1a1a2e;
+  color: #e0e0e0;
+  font-family: 'Courier New', monospace;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== Landing Page ===== */
+
+.landing-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+  padding: 48px 24px;
+  max-width: 640px;
+  width: 100%;
+}
+
+.landing-hero {
+  text-align: center;
+}
+
+.landing-title {
+  font-size: 4.5rem;
+  letter-spacing: 1rem;
+  color: #00f5ff;
+  text-shadow: 0 0 32px #00f5ffaa, 0 0 64px #00f5ff44;
+  margin-bottom: 10px;
+}
+
+.landing-subtitle {
+  font-size: 0.85rem;
+  letter-spacing: 0.25rem;
+  color: #6677aa;
+}
+
+.landing-content {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.info-section {
+  background: #16213e;
+  border: 1px solid #0f3460;
+  border-radius: 8px;
+  padding: 20px 24px;
+  flex: 1;
+  min-width: 240px;
+}
+
+.info-title {
+  font-size: 0.72rem;
+  letter-spacing: 0.2rem;
+  color: #6677aa;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #0f3460;
+}
+
+.key-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.82rem;
+  line-height: 2.2;
+}
+
+.key-table td {
+  padding: 0 4px;
+}
+
+.key {
+  color: #00f5ff;
+  font-weight: bold;
+  white-space: nowrap;
+  padding-right: 16px !important;
+}
+
+.score-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.8rem;
+}
+
+.score-table th,
+.score-table td {
+  padding: 7px 6px;
+  text-align: left;
+  border-bottom: 1px solid #0f3460;
+}
+
+.score-table th {
+  color: #6677aa;
+  font-size: 0.68rem;
+  letter-spacing: 0.1rem;
+}
+
+.score-table td:nth-child(2) {
+  color: #00f5ff;
+  font-weight: bold;
+}
+
+.tetris-score {
+  color: #ffd700 !important;
+}
+
+.level-info {
+  margin-top: 12px;
+  font-size: 0.7rem;
+  color: #6677aa;
+  line-height: 1.6;
+}
+
+.play-btn {
+  display: inline-block;
+  background: #0f3460;
+  color: #00f5ff;
+  border: 2px solid #00f5ff55;
+  border-radius: 8px;
+  padding: 16px 56px;
+  font-family: 'Courier New', monospace;
+  font-size: 1.2rem;
+  letter-spacing: 0.4rem;
+  text-decoration: none;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+
+.play-btn:hover {
+  background: #1a4a80;
+  box-shadow: 0 0 28px #00f5ff55;
+  transform: translateY(-3px);
+}
+
+.play-btn:active {
+  transform: translateY(0);
+}
+
+/* ===== Game Page ===== */
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+}
+
+.title {
+  font-size: 2.5rem;
+  letter-spacing: 0.6rem;
+  color: #00f5ff;
+  text-shadow: 0 0 24px #00f5ff88;
+}
+
+.game-container {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+#board {
+  border: 2px solid #00f5ff33;
+  box-shadow: 0 0 24px #00f5ff1a;
+  display: block;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 140px;
+}
+
+.panel {
+  background: #16213e;
+  border: 1px solid #0f3460;
+  border-radius: 6px;
+  padding: 10px 14px;
+}
+
+.label {
+  font-size: 0.68rem;
+  letter-spacing: 0.15rem;
+  color: #6677aa;
+  margin-bottom: 4px;
+}
+
+.value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #00f5ff;
+}
+
+#next-canvas {
+  display: block;
+  margin-top: 8px;
+  border: 1px solid #0f3460;
+  border-radius: 4px;
+}
+
+.btn-row {
+  display: flex;
+  gap: 8px;
+}
+
+#restart-btn {
+  flex: 1;
+  background: #0f3460;
+  color: #00f5ff;
+  border: 1px solid #00f5ff44;
+  border-radius: 6px;
+  padding: 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.1rem;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+#restart-btn:hover {
+  background: #1a4a80;
+  box-shadow: 0 0 12px #00f5ff33;
+}
+
+#mute-btn {
+  background: #0f3460;
+  border: 1px solid #00f5ff44;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  min-width: 40px;
+  line-height: 1;
+}
+
+#mute-btn:hover {
+  background: #1a4a80;
+}
+
+.controls {
+  background: #16213e;
+  border: 1px solid #0f3460;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 0.7rem;
+  color: #6677aa;
+  line-height: 1.9;
+}
+
+.controls-title {
+  font-size: 0.68rem;
+  letter-spacing: 0.15rem;
+  color: #6677aa;
+  margin-bottom: 4px;
+}

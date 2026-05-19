@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tetris</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="landing-wrapper">
+    <div class="landing-hero">
+      <h1 class="landing-title">TETRIS</h1>
+      <p class="landing-subtitle">Classic Block Puzzle Game</p>
+    </div>
+
+    <div class="landing-content">
+      <div class="info-section">
+        <h2 class="info-title">조작 방법</h2>
+        <table class="key-table">
+          <tr><td class="key">← →</td><td>블록 좌우 이동</td></tr>
+          <tr><td class="key">↑ / Z</td><td>블록 회전</td></tr>
+          <tr><td class="key">↓</td><td>소프트 드롭 (천천히 내리기)</td></tr>
+          <tr><td class="key">Space</td><td>하드 드롭 (바로 내리기)</td></tr>
+          <tr><td class="key">Enter</td><td>게임 재시작</td></tr>
+        </table>
+      </div>
+
+      <div class="info-section">
+        <h2 class="info-title">점수 계산</h2>
+        <table class="score-table">
+          <thead>
+            <tr><th>지운 줄</th><th>기본 점수</th><th>계산식</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1줄</td><td>100점</td><td>100 × 레벨</td></tr>
+            <tr><td>2줄</td><td>300점</td><td>300 × 레벨</td></tr>
+            <tr><td>3줄</td><td>500점</td><td>500 × 레벨</td></tr>
+            <tr><td>4줄 (테트리스!)</td><td class="tetris-score">800점</td><td>800 × 레벨</td></tr>
+          </tbody>
+        </table>
+        <p class="level-info">※ 10줄을 지울 때마다 레벨 업! 블록 낙하 속도가 빨라집니다.</p>
+      </div>
+    </div>
+
+    <a href="game.html" class="play-btn">▶ PLAY</a>
+  </div>
+</body>
+</html>
