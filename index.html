@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>yjh - Vibe Coding</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #1a1a2e;
+      color: #e0e0e0;
+      font-family: 'Courier New', monospace;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .wrapper {
+      padding: 48px 24px;
+      max-width: 600px;
+      width: 100%;
+    }
+    h1 {
+      font-size: 2.5rem;
+      letter-spacing: 0.5rem;
+      color: #00f5ff;
+      text-shadow: 0 0 24px #00f5ff88;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      font-size: 0.8rem;
+      letter-spacing: 0.2rem;
+      color: #6677aa;
+      margin-bottom: 48px;
+    }
+    .section-title {
+      font-size: 0.68rem;
+      letter-spacing: 0.2rem;
+      color: #6677aa;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #0f3460;
+    }
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #16213e;
+      border: 1px solid #0f3460;
+      border-radius: 8px;
+      padding: 18px 24px;
+      text-decoration: none;
+      color: #e0e0e0;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+    }
+    .card:hover {
+      border-color: #00f5ff55;
+      box-shadow: 0 0 20px #00f5ff22;
+      transform: translateX(4px);
+    }
+    .card-name {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #00f5ff;
+      letter-spacing: 0.1rem;
+    }
+    .card-desc {
+      font-size: 0.75rem;
+      color: #6677aa;
+      margin-top: 4px;
+    }
+    .card-arrow {
+      color: #00f5ff88;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <h1>YJH</h1>
+    <p class="subtitle">KOSA VIBE CODING 2026</p>
+
+    <div class="section-title">PROJECTS</div>
+    <div class="card-list">
+      <a href="src/dbswnsgur/day02/tetris/" class="card">
+        <div>
+          <div class="card-name">TETRIS</div>
+          <div class="card-desc">Day 02 — Classic block puzzle game</div>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
