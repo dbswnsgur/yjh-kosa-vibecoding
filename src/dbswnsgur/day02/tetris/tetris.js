@@ -426,6 +426,10 @@ function setScoreMsg(msg, color = '#6677aa') {
 }
 
 async function saveScore() {
+  if (!window.backendAvailable) {
+    setScoreMsg('서버 미연결 — 점수 저장 불가');
+    return;
+  }
   if (typeof Auth === 'undefined' || !Auth.isLoggedIn()) {
     setScoreMsg('로그인하면 점수가 저장됩니다');
     return;

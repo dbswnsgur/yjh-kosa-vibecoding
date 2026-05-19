@@ -325,6 +325,20 @@ body {
   padding-top: 56px;
 }
 
+/* ===== No Backend Notice ===== */
+
+.no-backend-notice {
+  background: #1a150a;
+  border: 1px solid #ffd70055;
+  border-radius: 8px;
+  color: #ffd700;
+  font-size: 0.78rem;
+  letter-spacing: 0.05rem;
+  padding: 10px 16px;
+  text-align: center;
+  width: 100%;
+}
+
 /* ===== Auth Section ===== */
 
 .auth-section {

@@ -88,6 +88,23 @@ const Auth = {
     this.clearTokens();
   },
 
+  // 백엔드 서버 가용 여부 확인 (세션 내 캐싱)
+  async checkBackend() {
+    const cached = sessionStorage.getItem('backend_ok');
+    if (cached !== null) return cached === '1';
+    try {
+      const ctrl = new AbortController();
+      setTimeout(() => ctrl.abort(), 3000);
+      const res = await fetch(`${API_BASE}/health`, { signal: ctrl.signal });
+      const ok = res.ok;
+      sessionStorage.setItem('backend_ok', ok ? '1' : '0');
+      return ok;
+    } catch {
+      sessionStorage.setItem('backend_ok', '0');
+      return false;
+    }
+  },
+
   // 401 시 자동으로 토큰 갱신 후 재시도
   async fetchWithAuth(url, options = {}) {
     const req = () =>

@@ -59,18 +59,28 @@
   <script src="auth.js"></script>
   <script src="tetris.js"></script>
   <script>
-    (function checkAuth() {
-      if (!Auth.isLoggedIn()) {
-        window.location.href = '/';
+    (async function checkAuth() {
+      const hasBackend = await Auth.checkBackend();
+      window.backendAvailable = hasBackend;
+
+      if (!hasBackend) {
+        document.getElementById('top-bar-username').textContent = '비회원';
+        document.getElementById('top-bar-logout').style.display = 'none';
         return;
       }
+
+      if (!Auth.isLoggedIn()) {
+        window.location.href = 'index.html';
+        return;
+      }
+
       const username = Auth.getUsername();
       if (username) {
         document.getElementById('top-bar-username').textContent = username;
       }
       document.getElementById('top-bar-logout').addEventListener('click', async () => {
         await Auth.logout();
-        window.location.href = '/';
+        window.location.href = 'index.html';
       });
     })();
   </script>

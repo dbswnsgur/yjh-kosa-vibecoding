@@ -1,4 +1,5 @@
 import os
+import secrets
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
@@ -29,7 +30,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
 
 
 def create_refresh_token(data: dict) -> str:
-    payload = {**data, "type": "refresh"}
+    payload = {**data, "type": "refresh", "jti": secrets.token_hex(16)}
     payload["exp"] = datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
     return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 

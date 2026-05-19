@@ -13,7 +13,12 @@
       <p class="landing-subtitle">Classic Block Puzzle Game</p>
     </div>
 
-    <!-- 로그인/회원가입 섹션 -->
+    <!-- 백엔드 없음 알림 -->
+    <div id="no-backend-notice" class="no-backend-notice" style="display:none">
+      ⚠ 서버 미연결 — 점수 저장 없이 플레이합니다
+    </div>
+
+    <!-- 로그인/회원가입 (백엔드 있고 비로그인) -->
     <div id="auth-section" class="auth-section" style="display:none">
       <div class="auth-tabs">
         <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">로그인</button>
@@ -36,60 +41,71 @@
       </form>
     </div>
 
-    <!-- 로그인 후 섹션 -->
-    <div id="user-section" style="display:none">
+    <!-- 로그인 완료 유저바 -->
+    <div id="user-bar-wrap" style="display:none">
       <div class="user-bar">
         <span class="user-greeting">▶ <span id="user-display-name"></span></span>
         <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
       </div>
-
-      <div class="landing-content">
-        <div class="info-section">
-          <h2 class="info-title">조작 방법</h2>
-          <table class="key-table">
-            <tr><td class="key">← →</td><td>블록 좌우 이동</td></tr>
-            <tr><td class="key">↑ / Z</td><td>블록 회전</td></tr>
-            <tr><td class="key">↓</td><td>소프트 드롭 (천천히 내리기)</td></tr>
-            <tr><td class="key">Space</td><td>하드 드롭 (바로 내리기)</td></tr>
-            <tr><td class="key">Enter</td><td>게임 재시작</td></tr>
-          </table>
-        </div>
-
-        <div class="info-section">
-          <h2 class="info-title">점수 계산</h2>
-          <table class="score-table">
-            <thead>
-              <tr><th>지운 줄</th><th>기본 점수</th><th>계산식</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>1줄</td><td>100점</td><td>100 × 레벨</td></tr>
-              <tr><td>2줄</td><td>300점</td><td>300 × 레벨</td></tr>
-              <tr><td>3줄</td><td>500점</td><td>500 × 레벨</td></tr>
-              <tr><td>4줄 (테트리스!)</td><td class="tetris-score">800점</td><td>800 × 레벨</td></tr>
-            </tbody>
-          </table>
-          <p class="level-info">※ 10줄을 지울 때마다 레벨 업! 블록 낙하 속도가 빨라집니다.</p>
-        </div>
-      </div>
-
-      <div class="leaderboard-section">
-        <h2 class="info-title">TOP 10 리더보드</h2>
-        <div id="leaderboard-list" class="leaderboard-list">
-          <p class="leaderboard-empty">불러오는 중...</p>
-        </div>
-      </div>
-
-      <a href="game.html" class="play-btn">▶ PLAY</a>
     </div>
+
+    <!-- 항상 표시: 조작법 + 점수 계산 -->
+    <div class="landing-content">
+      <div class="info-section">
+        <h2 class="info-title">조작 방법</h2>
+        <table class="key-table">
+          <tr><td class="key">← →</td><td>블록 좌우 이동</td></tr>
+          <tr><td class="key">↑ / Z</td><td>블록 회전</td></tr>
+          <tr><td class="key">↓</td><td>소프트 드롭 (천천히 내리기)</td></tr>
+          <tr><td class="key">Space</td><td>하드 드롭 (바로 내리기)</td></tr>
+          <tr><td class="key">Enter</td><td>게임 재시작</td></tr>
+        </table>
+      </div>
+
+      <div class="info-section">
+        <h2 class="info-title">점수 계산</h2>
+        <table class="score-table">
+          <thead>
+            <tr><th>지운 줄</th><th>기본 점수</th><th>계산식</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1줄</td><td>100점</td><td>100 × 레벨</td></tr>
+            <tr><td>2줄</td><td>300점</td><td>300 × 레벨</td></tr>
+            <tr><td>3줄</td><td>500점</td><td>500 × 레벨</td></tr>
+            <tr><td>4줄 (테트리스!)</td><td class="tetris-score">800점</td><td>800 × 레벨</td></tr>
+          </tbody>
+        </table>
+        <p class="level-info">※ 10줄을 지울 때마다 레벨 업! 블록 낙하 속도가 빨라집니다.</p>
+      </div>
+    </div>
+
+    <!-- 리더보드 (로그인 시에만) -->
+    <div id="leaderboard-section" class="leaderboard-section" style="display:none">
+      <h2 class="info-title">TOP 10 리더보드</h2>
+      <div id="leaderboard-list" class="leaderboard-list">
+        <p class="leaderboard-empty">불러오는 중...</p>
+      </div>
+    </div>
+
+    <!-- PLAY 버튼 (비로그인+백엔드 있으면 숨김) -->
+    <a href="game.html" class="play-btn" id="play-btn" style="display:none">▶ PLAY</a>
   </div>
 
   <script src="auth.js"></script>
   <script>
     async function init() {
+      const hasBackend = await Auth.checkBackend();
+
+      if (!hasBackend) {
+        showNoBackendMode();
+        return;
+      }
+
       if (!Auth.isLoggedIn()) {
         showAuthSection();
         return;
       }
+
       const username = Auth.getUsername();
       if (username) {
         showUserSection(username);
@@ -109,15 +125,21 @@
       }
     }
 
+    function showNoBackendMode() {
+      document.getElementById('no-backend-notice').style.display = 'block';
+      document.getElementById('play-btn').style.display = 'inline-block';
+    }
+
     function showAuthSection() {
       document.getElementById('auth-section').style.display = 'block';
-      document.getElementById('user-section').style.display = 'none';
     }
 
     function showUserSection(username) {
       document.getElementById('user-display-name').textContent = username;
       document.getElementById('auth-section').style.display = 'none';
-      document.getElementById('user-section').style.display = 'block';
+      document.getElementById('user-bar-wrap').style.display = 'block';
+      document.getElementById('leaderboard-section').style.display = 'block';
+      document.getElementById('play-btn').style.display = 'inline-block';
       loadLeaderboard();
     }
 
@@ -175,6 +197,9 @@
 
     async function handleLogout() {
       await Auth.logout();
+      document.getElementById('user-bar-wrap').style.display = 'none';
+      document.getElementById('leaderboard-section').style.display = 'none';
+      document.getElementById('play-btn').style.display = 'none';
       showAuthSection();
     }
 
