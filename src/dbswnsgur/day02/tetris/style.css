@@ -266,3 +266,283 @@ body {
   color: #6677aa;
   margin-bottom: 4px;
 }
+
+/* ===== Top Bar (Game Page) ===== */
+
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: #0d1b2e;
+  border-bottom: 1px solid #0f3460;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  z-index: 100;
+}
+
+.top-bar-home {
+  color: #6677aa;
+  text-decoration: none;
+  font-size: 0.75rem;
+  letter-spacing: 0.05rem;
+  transition: color 0.2s;
+}
+
+.top-bar-home:hover {
+  color: #00f5ff;
+}
+
+.top-bar-user {
+  flex: 1;
+  text-align: center;
+  font-size: 0.78rem;
+  color: #00f5ff;
+  letter-spacing: 0.1rem;
+}
+
+.top-bar-logout {
+  background: transparent;
+  border: 1px solid #0f3460;
+  border-radius: 4px;
+  color: #6677aa;
+  font-family: 'Courier New', monospace;
+  font-size: 0.72rem;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.top-bar-logout:hover {
+  color: #ff3131;
+  border-color: #ff313144;
+}
+
+.wrapper {
+  padding-top: 56px;
+}
+
+/* ===== Auth Section ===== */
+
+.auth-section {
+  background: #16213e;
+  border: 1px solid #0f3460;
+  border-radius: 10px;
+  padding: 24px;
+  width: 100%;
+  max-width: 360px;
+}
+
+.auth-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #0f3460;
+}
+
+.auth-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #6677aa;
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.1rem;
+  padding: 8px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  margin-bottom: -1px;
+}
+
+.auth-tab.active {
+  color: #00f5ff;
+  border-bottom-color: #00f5ff;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.auth-form input {
+  background: #0d1b2e;
+  border: 1px solid #0f3460;
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  padding: 10px 12px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.auth-form input:focus {
+  border-color: #00f5ff66;
+}
+
+.auth-submit {
+  background: #0f3460;
+  border: 1px solid #00f5ff44;
+  border-radius: 6px;
+  color: #00f5ff;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-size: 0.88rem;
+  letter-spacing: 0.15rem;
+  margin-top: 4px;
+  padding: 11px;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.auth-submit:hover {
+  background: #1a4a80;
+  box-shadow: 0 0 12px #00f5ff33;
+}
+
+.auth-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.auth-error {
+  color: #ff3131;
+  font-size: 0.75rem;
+  min-height: 1em;
+  text-align: center;
+}
+
+/* ===== User Bar (Landing) ===== */
+
+.user-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #16213e;
+  border: 1px solid #0f3460;
+  border-radius: 8px;
+  padding: 10px 16px;
+  width: 100%;
+}
+
+.user-greeting {
+  font-size: 0.88rem;
+  color: #00f5ff;
+  letter-spacing: 0.1rem;
+}
+
+.logout-btn {
+  background: transparent;
+  border: 1px solid #0f3460;
+  border-radius: 4px;
+  color: #6677aa;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-size: 0.72rem;
+  padding: 5px 12px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.logout-btn:hover {
+  color: #ff3131;
+  border-color: #ff313144;
+}
+
+/* ===== Leaderboard ===== */
+
+.leaderboard-section {
+  background: #16213e;
+  border: 1px solid #0f3460;
+  border-radius: 8px;
+  padding: 20px 24px;
+  width: 100%;
+}
+
+.leaderboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.leaderboard-empty {
+  color: #6677aa;
+  font-size: 0.8rem;
+  text-align: center;
+  padding: 12px 0;
+}
+
+.lb-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  background: #0d1b2e;
+  font-size: 0.8rem;
+}
+
+.lb-row.lb-top {
+  background: #112240;
+}
+
+.lb-rank {
+  width: 28px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.lb-name {
+  flex: 1;
+  color: #e0e0e0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lb-score {
+  color: #00f5ff;
+  font-weight: bold;
+  min-width: 72px;
+  text-align: right;
+}
+
+.lb-meta {
+  color: #6677aa;
+  font-size: 0.7rem;
+  min-width: 80px;
+  text-align: right;
+}
+
+/* ===== Best Score Panel ===== */
+
+.panel-best {
+  border-color: #ffd70033;
+}
+
+.best-value {
+  color: #ffd700 !important;
+}
+
+.best-user {
+  font-size: 0.68rem;
+  color: #6677aa;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ===== Score Message ===== */
+
+.score-msg {
+  font-size: 0.72rem;
+  letter-spacing: 0.05rem;
+  text-align: center;
+  min-height: 1.2em;
+  color: #6677aa;
+}

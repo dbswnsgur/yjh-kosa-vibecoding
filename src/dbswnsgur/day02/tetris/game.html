@@ -7,6 +7,12 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="top-bar">
+    <a href="/" class="top-bar-home">← HOME</a>
+    <span class="top-bar-user" id="top-bar-username"></span>
+    <button class="top-bar-logout" id="top-bar-logout">로그아웃</button>
+  </div>
+
   <div class="wrapper">
     <h1 class="title">TETRIS</h1>
     <div class="game-container">
@@ -24,10 +30,16 @@
           <div class="label">LINES</div>
           <div class="value" id="lines">0</div>
         </div>
+        <div class="panel panel-best">
+          <div class="label">BEST</div>
+          <div class="value best-value" id="best-score">-</div>
+          <div class="best-user" id="best-user"></div>
+        </div>
         <div class="panel">
           <div class="label">NEXT</div>
           <canvas id="next-canvas"></canvas>
         </div>
+        <div id="score-msg" class="score-msg"></div>
         <div class="btn-row">
           <button id="restart-btn">RESTART</button>
           <button id="mute-btn" title="음악 켜기/끄기">🔊</button>
@@ -43,6 +55,24 @@
       </div>
     </div>
   </div>
+
+  <script src="auth.js"></script>
   <script src="tetris.js"></script>
+  <script>
+    (function checkAuth() {
+      if (!Auth.isLoggedIn()) {
+        window.location.href = '/';
+        return;
+      }
+      const username = Auth.getUsername();
+      if (username) {
+        document.getElementById('top-bar-username').textContent = username;
+      }
+      document.getElementById('top-bar-logout').addEventListener('click', async () => {
+        await Auth.logout();
+        window.location.href = '/';
+      });
+    })();
+  </script>
 </body>
 </html>

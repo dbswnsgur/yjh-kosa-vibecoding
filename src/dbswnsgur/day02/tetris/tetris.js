@@ -111,6 +111,8 @@ let score, level, lines;
 let gameOver;
 let dropTimer, lastTime, dropInterval;
 let animFrameId = null;
+let scoreSubmitted = false;
+let globalBest = 0;
 
 function init() {
   canvas = document.getElementById('board');
@@ -133,7 +135,27 @@ function init() {
     toggleMute();
   });
 
+  loadBestScore();
   startGame();
+}
+
+async function loadBestScore() {
+  try {
+    const res = await fetch('/api/scores/leaderboard?limit=1');
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data.length) {
+      globalBest = data[0].score;
+      updateBestUI(data[0].score, data[0].username);
+    }
+  } catch {}
+}
+
+function updateBestUI(score, username) {
+  const scoreEl = document.getElementById('best-score');
+  const userEl = document.getElementById('best-user');
+  if (scoreEl) scoreEl.textContent = score.toLocaleString();
+  if (userEl) userEl.textContent = username || '';
 }
 
 function startGame() {
@@ -150,6 +172,8 @@ function startGame() {
   dropTimer = 0;
   lastTime = 0;
   dropInterval = 1000;
+  scoreSubmitted = false;
+  setScoreMsg('');
 
   updateUI();
   nextPiece = randomPiece();
@@ -283,6 +307,10 @@ function loop(timestamp) {
   if (gameOver) {
     draw();
     drawGameOver();
+    if (!scoreSubmitted) {
+      scoreSubmitted = true;
+      saveScore();
+    }
     animFrameId = null;
     return;
   }
@@ -388,6 +416,49 @@ function updateUI() {
   document.getElementById('score').textContent = score;
   document.getElementById('level').textContent = level;
   document.getElementById('lines').textContent = lines;
+}
+
+function setScoreMsg(msg, color = '#6677aa') {
+  const el = document.getElementById('score-msg');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.color = color;
+}
+
+async function saveScore() {
+  if (typeof Auth === 'undefined' || !Auth.isLoggedIn()) {
+    setScoreMsg('로그인하면 점수가 저장됩니다');
+    return;
+  }
+  setScoreMsg('저장 중...');
+  try {
+    const saveRes = await Auth.fetchWithAuth('/api/scores', {
+      method: 'POST',
+      body: JSON.stringify({ score, level, lines }),
+    });
+    if (!saveRes || !saveRes.ok) {
+      setScoreMsg('저장 실패', '#ff3131');
+      return;
+    }
+
+    // 순위 조회
+    const rankRes = await fetch(`/api/scores/rank?score=${score}`);
+    if (rankRes.ok) {
+      const { rank, total } = await rankRes.json();
+      const isNewBest = score > globalBest;
+      if (isNewBest) {
+        globalBest = score;
+        updateBestUI(score, Auth.getUsername());
+        setScoreMsg(`신기록! 전체 ${rank}위 / ${total}명`, '#ffd700');
+      } else {
+        setScoreMsg(`전체 ${rank}위 / ${total}명`, '#39ff14');
+      }
+    } else {
+      setScoreMsg('점수 저장됨!', '#39ff14');
+    }
+  } catch {
+    setScoreMsg('저장 실패', '#ff3131');
+  }
 }
 
 window.addEventListener('load', init);

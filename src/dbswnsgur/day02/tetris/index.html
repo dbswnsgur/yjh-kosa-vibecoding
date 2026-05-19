@@ -13,36 +13,204 @@
       <p class="landing-subtitle">Classic Block Puzzle Game</p>
     </div>
 
-    <div class="landing-content">
-      <div class="info-section">
-        <h2 class="info-title">조작 방법</h2>
-        <table class="key-table">
-          <tr><td class="key">← →</td><td>블록 좌우 이동</td></tr>
-          <tr><td class="key">↑ / Z</td><td>블록 회전</td></tr>
-          <tr><td class="key">↓</td><td>소프트 드롭 (천천히 내리기)</td></tr>
-          <tr><td class="key">Space</td><td>하드 드롭 (바로 내리기)</td></tr>
-          <tr><td class="key">Enter</td><td>게임 재시작</td></tr>
-        </table>
+    <!-- 로그인/회원가입 섹션 -->
+    <div id="auth-section" class="auth-section" style="display:none">
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">로그인</button>
+        <button class="auth-tab" id="tab-register" onclick="switchTab('register')">회원가입</button>
       </div>
 
-      <div class="info-section">
-        <h2 class="info-title">점수 계산</h2>
-        <table class="score-table">
-          <thead>
-            <tr><th>지운 줄</th><th>기본 점수</th><th>계산식</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>1줄</td><td>100점</td><td>100 × 레벨</td></tr>
-            <tr><td>2줄</td><td>300점</td><td>300 × 레벨</td></tr>
-            <tr><td>3줄</td><td>500점</td><td>500 × 레벨</td></tr>
-            <tr><td>4줄 (테트리스!)</td><td class="tetris-score">800점</td><td>800 × 레벨</td></tr>
-          </tbody>
-        </table>
-        <p class="level-info">※ 10줄을 지울 때마다 레벨 업! 블록 낙하 속도가 빨라집니다.</p>
-      </div>
+      <form id="login-form" class="auth-form" onsubmit="handleLogin(event)">
+        <input type="email" id="login-email" placeholder="이메일" required autocomplete="email">
+        <input type="password" id="login-password" placeholder="비밀번호" required autocomplete="current-password">
+        <button type="submit" class="auth-submit" id="login-submit">로그인</button>
+        <p class="auth-error" id="login-error"></p>
+      </form>
+
+      <form id="register-form" class="auth-form" style="display:none" onsubmit="handleRegister(event)">
+        <input type="email" id="reg-email" placeholder="이메일" required autocomplete="email">
+        <input type="text" id="reg-username" placeholder="닉네임 (2~20자)" required minlength="2" maxlength="20">
+        <input type="password" id="reg-password" placeholder="비밀번호 (8자 이상)" required minlength="8" autocomplete="new-password">
+        <button type="submit" class="auth-submit" id="register-submit">회원가입</button>
+        <p class="auth-error" id="register-error"></p>
+      </form>
     </div>
 
-    <a href="game.html" class="play-btn">▶ PLAY</a>
+    <!-- 로그인 후 섹션 -->
+    <div id="user-section" style="display:none">
+      <div class="user-bar">
+        <span class="user-greeting">▶ <span id="user-display-name"></span></span>
+        <button class="logout-btn" onclick="handleLogout()">로그아웃</button>
+      </div>
+
+      <div class="landing-content">
+        <div class="info-section">
+          <h2 class="info-title">조작 방법</h2>
+          <table class="key-table">
+            <tr><td class="key">← →</td><td>블록 좌우 이동</td></tr>
+            <tr><td class="key">↑ / Z</td><td>블록 회전</td></tr>
+            <tr><td class="key">↓</td><td>소프트 드롭 (천천히 내리기)</td></tr>
+            <tr><td class="key">Space</td><td>하드 드롭 (바로 내리기)</td></tr>
+            <tr><td class="key">Enter</td><td>게임 재시작</td></tr>
+          </table>
+        </div>
+
+        <div class="info-section">
+          <h2 class="info-title">점수 계산</h2>
+          <table class="score-table">
+            <thead>
+              <tr><th>지운 줄</th><th>기본 점수</th><th>계산식</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1줄</td><td>100점</td><td>100 × 레벨</td></tr>
+              <tr><td>2줄</td><td>300점</td><td>300 × 레벨</td></tr>
+              <tr><td>3줄</td><td>500점</td><td>500 × 레벨</td></tr>
+              <tr><td>4줄 (테트리스!)</td><td class="tetris-score">800점</td><td>800 × 레벨</td></tr>
+            </tbody>
+          </table>
+          <p class="level-info">※ 10줄을 지울 때마다 레벨 업! 블록 낙하 속도가 빨라집니다.</p>
+        </div>
+      </div>
+
+      <div class="leaderboard-section">
+        <h2 class="info-title">TOP 10 리더보드</h2>
+        <div id="leaderboard-list" class="leaderboard-list">
+          <p class="leaderboard-empty">불러오는 중...</p>
+        </div>
+      </div>
+
+      <a href="game.html" class="play-btn">▶ PLAY</a>
+    </div>
   </div>
+
+  <script src="auth.js"></script>
+  <script>
+    async function init() {
+      if (!Auth.isLoggedIn()) {
+        showAuthSection();
+        return;
+      }
+      const username = Auth.getUsername();
+      if (username) {
+        showUserSection(username);
+      } else {
+        try {
+          const res = await Auth.fetchWithAuth('/api/auth/me');
+          if (res && res.ok) {
+            const user = await res.json();
+            localStorage.setItem('username', user.username);
+            showUserSection(user.username);
+          } else {
+            showAuthSection();
+          }
+        } catch {
+          showAuthSection();
+        }
+      }
+    }
+
+    function showAuthSection() {
+      document.getElementById('auth-section').style.display = 'block';
+      document.getElementById('user-section').style.display = 'none';
+    }
+
+    function showUserSection(username) {
+      document.getElementById('user-display-name').textContent = username;
+      document.getElementById('auth-section').style.display = 'none';
+      document.getElementById('user-section').style.display = 'block';
+      loadLeaderboard();
+    }
+
+    function switchTab(tab) {
+      const isLogin = tab === 'login';
+      document.getElementById('login-form').style.display = isLogin ? 'flex' : 'none';
+      document.getElementById('register-form').style.display = isLogin ? 'none' : 'flex';
+      document.getElementById('tab-login').classList.toggle('active', isLogin);
+      document.getElementById('tab-register').classList.toggle('active', !isLogin);
+      document.getElementById('login-error').textContent = '';
+      document.getElementById('register-error').textContent = '';
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const errorEl = document.getElementById('login-error');
+      const btn = document.getElementById('login-submit');
+      errorEl.textContent = '';
+      btn.disabled = true;
+      btn.textContent = '로그인 중...';
+      try {
+        const data = await Auth.login(email, password);
+        showUserSection(data.username);
+      } catch (err) {
+        errorEl.textContent = err.message;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '로그인';
+      }
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      const email = document.getElementById('reg-email').value;
+      const username = document.getElementById('reg-username').value;
+      const password = document.getElementById('reg-password').value;
+      const errorEl = document.getElementById('register-error');
+      const btn = document.getElementById('register-submit');
+      errorEl.textContent = '';
+      btn.disabled = true;
+      btn.textContent = '가입 중...';
+      try {
+        await Auth.register(email, username, password);
+        const data = await Auth.login(email, password);
+        showUserSection(data.username);
+      } catch (err) {
+        errorEl.textContent = err.message;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '회원가입';
+      }
+    }
+
+    async function handleLogout() {
+      await Auth.logout();
+      showAuthSection();
+    }
+
+    async function loadLeaderboard() {
+      try {
+        const res = await fetch('/api/scores/leaderboard');
+        if (!res.ok) return;
+        renderLeaderboard(await res.json());
+      } catch {
+        document.getElementById('leaderboard-list').innerHTML =
+          '<p class="leaderboard-empty">불러오기 실패</p>';
+      }
+    }
+
+    function renderLeaderboard(scores) {
+      const el = document.getElementById('leaderboard-list');
+      if (!scores.length) {
+        el.innerHTML = '<p class="leaderboard-empty">아직 기록이 없습니다</p>';
+        return;
+      }
+      const medals = ['🥇', '🥈', '🥉'];
+      el.innerHTML = scores.map((s, i) => `
+        <div class="lb-row ${i < 3 ? 'lb-top' : ''}">
+          <span class="lb-rank">${medals[i] || i + 1}</span>
+          <span class="lb-name">${esc(s.username)}</span>
+          <span class="lb-score">${s.score.toLocaleString()}</span>
+          <span class="lb-meta">Lv.${s.level} / ${s.lines}줄</span>
+        </div>
+      `).join('');
+    }
+
+    function esc(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    init();
+  </script>
 </body>
 </html>
