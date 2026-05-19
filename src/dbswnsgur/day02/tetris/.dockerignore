@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+*.egg-info/
+.eggs/
+
+# 로컬 DB 파일
+tetris.db
+
+# 환경변수 (컨테이너는 docker-compose environment 블록 사용)
+.env
+.env.local
+
+# Git
+.git/
+.gitignore
+
+# 문서
+*.md
+PLAN.md
+
+# IDE
+.vscode/
+.idea/

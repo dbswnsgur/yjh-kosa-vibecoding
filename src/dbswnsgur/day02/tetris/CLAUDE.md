@@ -52,6 +52,7 @@ FastAPI 백엔드가 API와 프론트엔드 정적 파일을 모두 서빙하는
 tetris/
 ├── docker-compose.yml  # MySQL + app 컨테이너 정의
 ├── Dockerfile          # FastAPI 앱 이미지
+├── .dockerignore       # Docker 빌드 제외 파일 목록 (__pycache__, .env, .git 등)
 ├── .env.example        # 환경변수 템플릿 (cp .env.example .env)
 ├── backend/            # FastAPI 백엔드 (Python 패키지)
 │   ├── main.py         # 앱 진입점, 라우터 등록, /api/* → 정적파일 마운트 순서
